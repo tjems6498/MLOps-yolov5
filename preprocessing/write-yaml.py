@@ -2,8 +2,7 @@ import argparse
 import yaml
 
 def write_yamlFile(data_path, label_path):
-    while 1:
-        True
+
     with open(label_path, 'r') as f:
         labels = f.read().split('\n')
 

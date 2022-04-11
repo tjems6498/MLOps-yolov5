@@ -8,13 +8,13 @@ def preprocess_op(pvc_name, volume_name, volume_mount_path):
     return dsl.ContainerOp(
         name='Preprocess Data',
         image='tjems6498/kfp-yolov5-preprocess:v0.1',
-        arguments=['--data-path', volume_mount_path,
-                   '--data-path', volume_mount_path + '/classname.txt'],
+        arguments=['--data-path', volume_mount_path + '/data',
+                   '--label-path', volume_mount_path + '/data/classname.txt'],
     ).apply(onprem.mount_pvc(pvc_name, volume_name=volume_name, volume_mount_path=volume_mount_path))
 
 
 @dsl.pipeline(
-    name='Surface Crack Pipeline',
+    name='Yolov5 Pipeline',
     description=''
 )
 def surface_pipeline():
