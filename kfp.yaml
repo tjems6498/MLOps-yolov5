@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
-  generateName: surface-crack-pipeline-
-  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10, pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-11T15:18:23.898946',
-    pipelines.kubeflow.org/pipeline_spec: '{"name": "Surface Crack Pipeline"}'}
+  generateName: yolov5-pipeline-
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10, pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-11T15:32:57.443227',
+    pipelines.kubeflow.org/pipeline_spec: '{"name": "Yolov5 Pipeline"}'}
   labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10}
 spec:
-  entrypoint: surface-crack-pipeline
+  entrypoint: yolov5-pipeline
   templates:
   - name: preprocess-data
     container:
-      args: [--data-path, /home/jeff, --data-path, /home/jeff/classname.txt]
+      args: [--data-path, /home/jeff/data, --label-path, /home/jeff/data/classname.txt]
       image: tjems6498/kfp-yolov5-preprocess:v0.1
       volumeMounts:
       - {mountPath: /home/jeff, name: pipeline}
@@ -22,7 +22,7 @@ spec:
     volumes:
     - name: pipeline
       persistentVolumeClaim: {claimName: workspace-yolov5}
-  - name: surface-crack-pipeline
+  - name: yolov5-pipeline
     dag:
       tasks:
       - {name: preprocess-data, template: preprocess-data}
