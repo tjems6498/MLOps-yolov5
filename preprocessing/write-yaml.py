@@ -4,7 +4,7 @@ import yaml
 def write_yamlFile(data_path, label_path):
 
     with open(label_path, 'r') as f:
-        labels = f.read().split('\n')
+        labels = f.read().split()
 
     yaml_dict = {}
     yaml_dict['train'] = f'{data_path}/train/images'
