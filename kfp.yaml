@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: yolov5-pipeline-
-  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10, pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-11T15:32:57.443227',
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10, pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-11T15:54:16.725030',
     pipelines.kubeflow.org/pipeline_spec: '{"name": "Yolov5 Pipeline"}'}
   labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10}
 spec:
