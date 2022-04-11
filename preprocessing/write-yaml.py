@@ -13,7 +13,7 @@ def write_yamlFile(data_path, label_path):
     yaml_dict['nc'] = len(labels)
     yaml_dict['names'] = labels
 
-    with open(f'{data_path}/MLOps-yolov5/yolov5/data/custom.yaml', 'w') as f:  # yaml 파일은 yolov5/data 폴더에 있어야 함
+    with open('../yolov5/data/custom.yaml', 'w') as f:  # yaml 파일은 yolov5/data 폴더에 있어야 함
         yaml.dump(yaml_dict, f)
 
 
