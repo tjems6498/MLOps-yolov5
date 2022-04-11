@@ -16,11 +16,7 @@ def write_yamlFile(data_path, label_path):
     with open('../yolov5/data/custom.yaml', 'w') as f:  # yaml 파일은 yolov5/data 폴더에 있어야 함
         yaml.dump(yaml_dict, f)
 
-
     print(yaml_dict)
-
-    while 1:
-        True
 
 
 
