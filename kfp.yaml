@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: yolov5-pipeline-
-  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10, pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-20T18:59:55.509911',
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10, pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-20T20:16:45.997232',
     pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "pretrain", "type":
       "Boolean"}, {"name": "image_size", "type": "Integer"}, {"name": "batch_size",
       "type": "Integer"}, {"name": "epochs", "type": "Integer"}, {"name": "weights_path",
@@ -34,7 +34,7 @@ spec:
       args: [--img, '{{inputs.parameters.image_size}}', --batch, '{{inputs.parameters.batch_size}}',
         --epochs, '{{inputs.parameters.epochs}}', --data, /home/jeff/MLOps-yolov5/yolov5/data/custom.yaml,
         --weights, '{{inputs.parameters.weights_path}}']
-      image: tjems6498/kfp-yolov5-train:v0.1
+      image: tjems6498/kfp-yolov5-train:v0.3
       resources:
         limits: {nvidia.com/gpu: 4}
       volumeMounts:

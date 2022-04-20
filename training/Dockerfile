@@ -15,7 +15,7 @@ RUN pip uninstall -y nvidia-tensorboard nvidia-tensorboard-plugin-dlprof
 
 WORKDIR /home/jeff/MLOps-yolov5/yolov5
 
-RUN pip freeze > requirements.txt coremltools onnx gsutil notebook wandb>=0.12.2
+RUN pip freeze > requirements.txt coremltools onnx gsutil notebook pandas wandb>=0.12.2
 #RUN pip install --no-cache -r coremltools onnx gsutil notebook wandb>=0.12.2
 RUN pip install --no-cache -U Pillow
 # RUN pip install --no-cache -U torch torchvision numpy

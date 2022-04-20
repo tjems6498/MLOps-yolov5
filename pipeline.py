@@ -16,7 +16,7 @@ def train_op(pvc_name, volume_name, volume_mount_path, img, batch, epochs, weigh
 
     return dsl.ContainerOp(
         name='train Data',
-        image='tjems6498/kfp-yolov5-train:v0.1',
+        image='tjems6498/kfp-yolov5-train:v0.3',
         arguments=['--img', img,
                    '--batch', batch,
                    '--epochs', epochs,
