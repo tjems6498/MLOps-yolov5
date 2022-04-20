@@ -2,12 +2,19 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   generateName: yolov5-pipeline-
-  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10, pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-11T16:12:12.266012',
-    pipelines.kubeflow.org/pipeline_spec: '{"name": "Yolov5 Pipeline"}'}
+  annotations: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10, pipelines.kubeflow.org/pipeline_compilation_time: '2022-04-20T18:59:55.509911',
+    pipelines.kubeflow.org/pipeline_spec: '{"inputs": [{"name": "pretrain", "type":
+      "Boolean"}, {"name": "image_size", "type": "Integer"}, {"name": "batch_size",
+      "type": "Integer"}, {"name": "epochs", "type": "Integer"}, {"name": "weights_path",
+      "type": "String"}], "name": "Yolov5 Pipeline"}'}
   labels: {pipelines.kubeflow.org/kfp_sdk_version: 1.8.10}
 spec:
   entrypoint: yolov5-pipeline
   templates:
+  - name: condition-1
+    dag:
+      tasks:
+      - {name: preprocess-data, template: preprocess-data}
   - name: preprocess-data
     container:
       args: [--data-path, /home/jeff/data, --label-path, /home/jeff/data/classname.txt]
@@ -22,10 +29,56 @@ spec:
     volumes:
     - name: pipeline
       persistentVolumeClaim: {claimName: workspace-yolov5}
+  - name: train-data
+    container:
+      args: [--img, '{{inputs.parameters.image_size}}', --batch, '{{inputs.parameters.batch_size}}',
+        --epochs, '{{inputs.parameters.epochs}}', --data, /home/jeff/MLOps-yolov5/yolov5/data/custom.yaml,
+        --weights, '{{inputs.parameters.weights_path}}']
+      image: tjems6498/kfp-yolov5-train:v0.1
+      resources:
+        limits: {nvidia.com/gpu: 4}
+      volumeMounts:
+      - {mountPath: /home/jeff, name: pipeline}
+    inputs:
+      parameters:
+      - {name: batch_size}
+      - {name: epochs}
+      - {name: image_size}
+      - {name: weights_path}
+    metadata:
+      labels:
+        pipelines.kubeflow.org/kfp_sdk_version: 1.8.10
+        pipelines.kubeflow.org/pipeline-sdk-type: kfp
+        pipelines.kubeflow.org/enable_caching: "true"
+    volumes:
+    - name: pipeline
+      persistentVolumeClaim: {claimName: workspace-yolov5}
   - name: yolov5-pipeline
+    inputs:
+      parameters:
+      - {name: batch_size}
+      - {name: epochs}
+      - {name: image_size}
+      - {name: pretrain}
+      - {name: weights_path}
     dag:
       tasks:
-      - {name: preprocess-data, template: preprocess-data}
+      - {name: condition-1, template: condition-1, when: '"{{inputs.parameters.pretrain}}"
+          == "True"'}
+      - name: train-data
+        template: train-data
+        dependencies: [condition-1]
+        arguments:
+          parameters:
+          - {name: batch_size, value: '{{inputs.parameters.batch_size}}'}
+          - {name: epochs, value: '{{inputs.parameters.epochs}}'}
+          - {name: image_size, value: '{{inputs.parameters.image_size}}'}
+          - {name: weights_path, value: '{{inputs.parameters.weights_path}}'}
   arguments:
-    parameters: []
+    parameters:
+    - {name: pretrain}
+    - {name: image_size}
+    - {name: batch_size}
+    - {name: epochs}
+    - {name: weights_path}
   serviceAccountName: pipeline-runner

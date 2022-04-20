@@ -19,7 +19,6 @@ def write_yamlFile(data_path, label_path):
     print(yaml_dict)
 
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-path', type=str, help='dataset root path')
