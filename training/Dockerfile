@@ -21,8 +21,7 @@ RUN pip install --no-cache -U Pillow
 # RUN pip install --no-cache -U torch torchvision numpy
 RUN apt-get update
 
-WORKDIR /home/jeff/MLOps-yolov5/training
-ENTRYPOINT ["python", "training.py"]
+ENTRYPOINT ["python", "train.py"]
 
 
 # docker build -t tjems6498/kfp-yolov5-train:v0.1 .
